@@ -1,0 +1,12 @@
+[submodule "vagrant/cookbooks/java"]
+	path = vagrant/cookbooks/java
+	url = git@github.com:retr0h/cookbook-java.git
+[submodule "vagrant/cookbooks/ark"]
+	path = vagrant/cookbooks/ark
+	url = git@github.com:opscode-cookbooks/ark.git
+[submodule "vagrant/cookbooks/apt"]
+	path = vagrant/cookbooks/apt
+	url = git@github.com:opscode-cookbooks/apt.git
+[submodule "vagrant/cookbooks/kafka"]
+	path = vagrant/cookbooks/kafka
+	url = git@github.com:retr0h/cookbook-kafka.git
