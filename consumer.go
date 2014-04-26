@@ -3,6 +3,7 @@ package servo
 import (
 	"fmt"
 	"time"
+
 	"github.com/Shopify/sarama"
 )
 
@@ -25,7 +26,7 @@ func Cons() {
 	defer consumer.Close()
 
 	msgCount := 0
-	consumerLoop:
+consumerLoop:
 	for {
 		select {
 		case event := <-consumer.Events():

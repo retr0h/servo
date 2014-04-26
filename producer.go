@@ -1,8 +1,9 @@
 package servo
 
 import (
-	"time"
 	"fmt"
+	"time"
+
 	"github.com/Shopify/sarama"
 )
 

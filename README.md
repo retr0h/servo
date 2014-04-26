@@ -6,6 +6,13 @@ The Latin Word Servo has many meanings, mainly: to watch over, keep, protect, ob
 Developing
 ==========
 
+Add the following to ~/.vimrc:
+
+    set rtp+=$GOROOT/misc/vim
+    autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
+Running:
+
     $ vagrant plugin install vagrant-omnibus
     $ mkdir -p $GOPATH/src/github.com/retr0h
     $ cd !$
