@@ -11,7 +11,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "servo-cli"
 	app.Usage = "CLI command for servo."
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		cli.StringFlag{"action, a", "produce", "type of action to perform"},
 	}
 	app.Action = func(c *cli.Context) {
