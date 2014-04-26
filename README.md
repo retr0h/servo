@@ -14,6 +14,16 @@ Developing
     $ git submodule update
     $ vagrant up
 
+In one window:
+
+    $ bin/kafka-console-consumer.sh \
+        --zookeeper 192.168.90.5:2181 \
+        --topic my_topic
+
+In another window:
+
+    $ go run cli/servo.go -a produce
+
 License
 =======
 

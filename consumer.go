@@ -27,7 +27,6 @@ func Cons() {
 	msgCount := 0
 	consumerLoop:
 	for {
-		fmt.Println("here")
 		select {
 		case event := <-consumer.Events():
 			if event.Err != nil {
