@@ -17,10 +17,7 @@ Running:
     $ mkdir -p $GOPATH/src/github.com/retr0h
     $ cd !$
     $ git clone git@github.com:retr0h/servo.git
-    $ git submodule init
-    $ git submodule update
-    $ go get github.com/Shopify/sarama
-    $ go get github.com/codegangsta/cli
+    $ make
 
     $ vagrant up
 
