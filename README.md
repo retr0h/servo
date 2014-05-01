@@ -8,28 +8,29 @@ Developing
 
 Add the following to ~/.vimrc:
 
-    set rtp+=$GOROOT/misc/vim
-    autocmd FileType go autocmd BufWritePre <buffer> Fmt
+	set rtp+=$GOROOT/misc/vim
+	autocmd FileType go autocmd BufWritePre <buffer> Fmt
 
 Running:
 
-    $ vagrant plugin install vagrant-omnibus
-    $ mkdir -p $GOPATH/src/github.com/retr0h
-    $ cd !$
-    $ git clone git@github.com:retr0h/servo.git
-    $ make
+	$ vagrant plugin install vagrant-omnibus
+	$ mkdir -p $GOPATH/src/github.com/retr0h
+	$ cd !$
+	$ git clone git@github.com:retr0h/servo.git
+	$ make
+	$ vagrant up
 
-    $ vagrant up
+In one window.  Publish an initial message, and create the topic:
 
-In one window:
+	$ curl -d 'hello world 1' 'http://192.168.90.5:4151/put?topic=test'
 
-    $ bin/kafka-console-consumer.sh \
-        --zookeeper 192.168.90.5:2181 \
-        --topic my_topic
+In the same window, start the client:
 
-In another window:
+	nsq_to_file --topic=test --output-dir=/tmp --lookupd-http-address=192.168.90.5:4161
 
-    $ go run cli/servo.go -a produce
+In another window, publish more messages:
+ 
+	curl -d 'hello world 2' 'http://192.168.90.5:4151/put?topic=test'
 
 License
 =======
