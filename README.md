@@ -22,15 +22,15 @@ Running:
 
 In one window.  Publish an initial message, and create the topic:
 
-	$ curl -d 'hello world 1' 'http://192.168.90.5:4151/put?topic=test'
+	$ curl -d 'hello world 1' 'http://192.168.90.11:4151/put?topic=test'
 
 In the same window, start the client:
 
-	nsq_to_file --topic=test --output-dir=/tmp --lookupd-http-address=192.168.90.5:4161
+	nsq_to_file --topic=test --output-dir=/tmp --lookupd-http-address=192.168.90.11:4161
 
 In another window, publish more messages:
  
-	curl -d 'hello world 2' 'http://192.168.90.5:4151/put?topic=test'
+	curl -d 'hello world 2' 'http://192.168.90.11:4151/put?topic=test'
 
 License
 =======
