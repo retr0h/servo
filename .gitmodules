@@ -1,9 +1,6 @@
 [submodule "vagrant/cookbooks/apt"]
 	path = vagrant/cookbooks/apt
 	url = git@github.com:opscode-cookbooks/apt.git
-[submodule "vagrant/cookbooks/golang"]
-	path = vagrant/cookbooks/golang
-	url = git@github.com:NOX73/chef-golang.git
 [submodule "vagrant/cookbooks/nsq"]
 	path = vagrant/cookbooks/nsq
 	url = git@github.com:simplereach/chef-nsq.git
