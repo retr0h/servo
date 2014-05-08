@@ -1,3 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 def get_address index
   "192.168.90.#{10+index}"
 end
