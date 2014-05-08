@@ -17,6 +17,7 @@ Running:
 	$ mkdir -p $GOPATH/src/github.com/retr0h
 	$ cd !$
 	$ git clone git@github.com:retr0h/servo.git
+	$ cd servo
 	$ make
 	$ vagrant up
 
