@@ -22,8 +22,9 @@ Chef::Recipe.send(:include, ServoNSQ::Helpers)
 
 address = address_for node['servo-nsq']['bind_interface']
 
-node.set['nsq']['nsqd']['broadcast_address'] = address
-node.set['nsq']['nsqlookupd']['broadcast_address'] = address
+node.override['nsq']['nsqd']['broadcast_address'] = address
+node.override['nsq']['nsqlookupd']['broadcast_address'] = address
+node.override['nsq']['nsqlookupd']['tcp_address'] = "#{address}:4160"
 
 include_recipe 'nsq::nsqadmin'
 include_recipe 'nsq::nsqd'
