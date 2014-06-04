@@ -18,4 +18,4 @@
 # limitations under the License.
 #
 
-default['servo-nsq']['bind_interface'] = 'eth1'
+default['servo-nsq']['broadcast_interface'] = 'eth1'
