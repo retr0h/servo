@@ -1,37 +1,31 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-def get_address(index)
-  "192.168.90.#{10 + index}"
-end
+# encoding: UTF-8
 
 Vagrant.configure('2') do |config|
   config.vm.box = 'hashicorp/precise64'
-  config.omnibus.chef_version = 'latest'
+  config.vm.provision 'ansible' do |ansible|
+    ansible.playbook = 'vagrant/site.yml'
+    ansible.limit = 'all'
+    ansible.sudo = true
+    ansible.host_key_checking = false
+    # ansible.verbose = "vvv"
+    ansible.groups = {
+      'nsqadmin' => ['nsqd-1', 'nsqd-2', 'nsqd-3'],
+      'nsqd' => ['nsqd-1', 'nsqd-2', 'nsqd-3'],
+      'nsqlookupd' => ['nsqd-1', 'nsqd-2', 'nsqd-3']
+    }
+    ansible.extra_vars = {
+      nsq_nsqd_interface: 'eth1',
+      nsq_nsqadmin_interface: 'eth1'
+    }
+  end
 
-  instances = (1..3)
-  instances.each do |instance|
-    vm_name = "nsqd-#{instance}"
+  (1..3).each do |i|
+    vm_name = "nsqd-#{i}"
     config.vm.define vm_name do |c|
       c.vm.host_name = vm_name
-      c.vm.network 'private_network', ip: get_address(instance) # eth1
+      c.vm.network 'private_network', ip: "192.168.90.#{11 + i}" # eth1
       c.vm.provider 'virtualbox' do |vb|
         vb.customize ['modifyvm', :id, '--memory', '512']
-      end
-      c.vm.provision 'chef_solo' do |chef|
-        chef.cookbooks_path = 'vagrant/cookbooks'
-        chef.custom_config_path = 'vagrant/solo.rb'
-        chef.add_recipe 'apt'
-        chef.add_recipe 'servo-nsq'
-
-        chef.json = {
-          nsq: {
-            nsqd: {
-              lookupd_tcp_address: instances.map { |i| "#{get_address(i)}:4160" },
-              lookupd_http_address: instances.map { |i| "#{get_address(i)}:4161" }
-            }
-          }
-        }
       end
     end
   end
