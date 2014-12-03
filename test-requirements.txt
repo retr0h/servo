@@ -1,6 +1,8 @@
-nose
-mock
-unittest2
+coverage
+discover
 flake8
+mock
 pep8
 sphinx
+testrepository
+unittest2

@@ -26,5 +26,5 @@ version_info = pbr.version.VersionInfo('servo')
 
 try:
     __version__ = version_info.version_string()
-    except AttributeError:
-        __version__ = None
+except AttributeError:
+    __version__ = None

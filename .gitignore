@@ -1,5 +1,6 @@
-.vagrant/
-.tox/
 *.egg-info/
 *.egg/
+.testrepository/
+.tox/
+.vagrant/
 docs/build/
