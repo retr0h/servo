@@ -21,44 +21,42 @@
 # THE SOFTWARE.
 
 import nsq
+import tornado.ioloop
+import time
 
 
-class Reader(object):
+class Writer(object):
     """
-    A client which handles read interactions with nsqd.
+    A client which handles write interactions with nsqd.
     """
 
     def __init__(self):
-        self._addrs = ['192.168.90.12:4161',
-                       '192.168.90.13:4161',
-                       '192.168.90.14:4161']
-        self._topic = 'nsq_reader'
-        self._channel = 'asdf'
-        self._lookupd_poll_interval = 15
-        self._set_reader()
+        self._addrs = ['192.168.90.12:4150',
+                       '192.168.90.13:4150',
+                       '192.168.90.14:4150']
+        self._writer = self._get_writer()
 
-    def _handler(self, message):
-        msg = ('- {0}:\n'
-               '  {1}\n'
-               '  {2}\n').format(message.id,
-                                 message.body,
-                                 message.attempts)
-        print msg
-        return True
+    def _pub_message(self):
+        self._writer.pub('nsq_reader',
+                         time.strftime('%H:%M:%S'),
+                         self._finish_pub)
 
-    def _set_reader(self):
-        nsq.Reader(message_handler=self._handler,
-                   lookupd_http_addresses=self._addrs,
-                   topic=self._topic,
-                   channel=self._channel,
-                   lookupd_poll_interval=self._lookupd_poll_interval)
+    def _finish_pub(self, conn, data):
+        print data
+
+    def _get_writer(self):
+        # TODO: HA should be handled by publishing to a known load balanced
+        # endpoint or local nsqd instance.
+        writer = nsq.Writer(self._addrs)
+        tornado.ioloop.PeriodicCallback(self._pub_message, 1000).start()
+        return writer
 
     def run(self):
         nsq.run()
 
 
 def main():
-    r = Reader()
+    r = Writer()
     r.run()
 
 
