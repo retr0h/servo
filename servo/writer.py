@@ -47,18 +47,11 @@ class Writer(object):
     def _get_writer(self):
         # TODO: HA should be handled by publishing to a known load balanced
         # endpoint or local nsqd instance.
-        writer = nsq.Writer(self._addrs)
-        tornado.ioloop.PeriodicCallback(self._pub_message, 1000).start()
-        return writer
+        return nsq.Writer(self._addrs)
+
+    def _get_ioloop(self):
+        return tornado.ioloop.PeriodicCallback(self._pub_message, 1000)
 
     def run(self):
+        self._get_ioloop().start()
         nsq.run()
-
-
-def main():
-    r = Writer()
-    r.run()
-
-
-if __name__ == '__main__':
-    main()
