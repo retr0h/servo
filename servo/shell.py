@@ -20,38 +20,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import nsq
+"""
+Servo CLI tool.
+"""
+
+import argparse
+
+import servo
+from servo import reader
+from servo import writer
 
 
-class Reader(object):
-    """
-    A client which handles read interactions with nsqd.
-    """
+def _parse_args():
+    ap = argparse.ArgumentParser(prog='servo',
+                                 description=__doc__.strip())
+    ap.add_argument('--version', action='version',
+                    version=servo.__version__)
+    ap.add_argument('--read', action='store_true',
+                    help='Execute a read action to NSQD.')
+    ap.add_argument('--write', action='store_true',
+                    help='Execute a write action to NSQD.')
+    args = vars(ap.parse_args())
+    return args
 
-    def __init__(self):
-        self._addrs = ['192.168.90.12:4161',
-                       '192.168.90.13:4161',
-                       '192.168.90.14:4161']
-        self._topic = 'nsq_reader'
-        self._channel = 'asdf'
-        self._lookupd_poll_interval = 15
 
-    def _handler(self, message):
-        msg = ('- {0}:\n'
-               '  {1}\n'
-               '  {2}\n').format(message.id,
-                                 message.body,
-                                 message.attempts)
-        print msg
-        return True
+def main():
+    args = _parse_args()
+    r = reader.Reader()
+    w = writer.Writer()
 
-    def _set_reader(self):
-        nsq.Reader(message_handler=self._handler,
-                   lookupd_http_addresses=self._addrs,
-                   topic=self._topic,
-                   channel=self._channel,
-                   lookupd_poll_interval=self._lookupd_poll_interval)
+    if args['read']:
+        r.run()
+    elif args['write']:
+        w.run()
 
-    def run(self):
-        self._set_reader()
-        nsq.run()
+
+if __name__ == '__main__':
+    main()

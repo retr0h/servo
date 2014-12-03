@@ -1,9 +1,22 @@
 ---
 - hosts: all
   pre_tasks:
-    - apt: update_cache=yes cache_valid_time=3600
+    - name: refresh apt cache
+      apt: update_cache=yes cache_valid_time=3600
   tasks:
-    - apt: pkg=curl
+    # TODO(retr0h): Move these tasks to a servo ansible role.
+    - name: install necessary system packages
+      apt: pkg={{ item }}
+      with_items:
+        - curl
+        - python-dev
+        - python-pip
+    # TODO(retr0h): Convert to venv install through pip.
+    - name: install specified python requirements
+      pip: requirements=/vagrant/{{ item }}
+      with_items:
+        - requirements.txt
+        - test-requirements.txt
   roles:
     - { role: nsq,
         nsq_nsqadmin_server: true,
