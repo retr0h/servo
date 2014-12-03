@@ -2,6 +2,8 @@
 - hosts: all
   pre_tasks:
     - apt: update_cache=yes cache_valid_time=3600
+  tasks:
+    - apt: pkg=curl
   roles:
     - { role: nsq,
         nsq_nsqadmin_server: true,
