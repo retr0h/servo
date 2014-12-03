@@ -9,7 +9,7 @@ Docs
 ====
 
 	$ tox -e docs
-	$ open docs/build/html/index.html
+	$ open doc/build/html/index.html
 
 License
 =======
