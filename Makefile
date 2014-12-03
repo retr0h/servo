@@ -1,6 +1,13 @@
-all: deps
+all: deps up test
 
 deps:
-	git submodule update --init
+	@git submodule update --init
 
-.PNONY: all deps test
+up:
+	@vagrant up --no-provision
+	@vagrant provision 
+	
+test:
+	@tox
+
+.PNONY: all deps up test
