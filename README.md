@@ -1,3 +1,5 @@
+[![Build Status](http://img.shields.io/travis/retr0h/servo.svg?style=flat-square)](https://travis-ci.org/retr0h/servo)
+
 servo
 =====
 
