@@ -28,13 +28,14 @@ class Reader(object):
     A client which handles read interactions with nsqd.
     """
 
-    def __init__(self):
-        self._addrs = ['192.168.90.12:4161',
-                       '192.168.90.13:4161',
-                       '192.168.90.14:4161']
-        self._topic = 'nsq_reader'
-        self._channel = 'asdf'
-        self._lookupd_poll_interval = 15
+    def __init__(self, **kwargs):
+        # TODO(retr0h): Further abstract out into a config class.
+        port = kwargs.get('port', 4161)
+        self._lookupd_addrs = ['{host}:{port}'.format(**locals())
+                               for host in kwargs.get('lookupd_addresses')]
+        self._topic = kwargs.get('topic', 'nsq_reader')
+        self._channel = kwargs.get('channel', 'asdf')
+        self._lookupd_poll_interval = kwargs.get('lookupd_poll_interval', 15)
 
     def _handler(self, message):
         msg = ('- {0}:\n'
@@ -47,7 +48,7 @@ class Reader(object):
 
     def _set_reader(self):
         nsq.Reader(message_handler=self._handler,
-                   lookupd_http_addresses=self._addrs,
+                   lookupd_http_addresses=self._lookupd_addrs,
                    topic=self._topic,
                    channel=self._channel,
                    lookupd_poll_interval=self._lookupd_poll_interval)

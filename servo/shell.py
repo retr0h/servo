@@ -37,17 +37,20 @@ def _parse_args():
     ap.add_argument('--version', action='version',
                     version=servo.__version__)
     ap.add_argument('--read', action='store_true',
-                    help='Execute a read action to NSQD.')
+                    help='Execute a read action to NSQD')
     ap.add_argument('--write', action='store_true',
-                    help='Execute a write action to NSQD.')
+                    help='Execute a write action to NSQD')
     args = vars(ap.parse_args())
     return args
 
 
 def main():
     args = _parse_args()
-    r = reader.Reader()
-    w = writer.Writer()
+    addrs = ['192.168.90.12',
+             '192.168.90.13',
+             '192.168.90.14']
+    r = reader.Reader(lookupd_addresses=addrs)
+    w = writer.Writer(nsqd_addresses=addrs)
 
     if args['read']:
         r.run()
