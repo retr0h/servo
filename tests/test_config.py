@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import os
+
 import testtools
 
 from servo.config import Config
@@ -28,7 +30,9 @@ from servo.config import Config
 class TestConfig(testtools.TestCase):
     def setUp(self):
         super(TestConfig, self).setUp()
-        self._config = Config()
+        basedir = os.path.dirname(__file__)
+        conf = os.path.join(basedir, 'servo.json')
+        self._config = Config(config_file=conf)
 
     def test_reader_hosts_accessor(self):
         result = self._config.reader_hosts
