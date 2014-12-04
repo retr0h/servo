@@ -27,6 +27,7 @@ Servo CLI tool.
 import argparse
 
 import servo
+from servo import config
 from servo import reader
 from servo import writer
 
@@ -46,11 +47,9 @@ def _parse_args():
 
 def main():
     args = _parse_args()
-    addrs = ['192.168.90.12',
-             '192.168.90.13',
-             '192.168.90.14']
-    r = reader.Reader(lookupd_addresses=addrs)
-    w = writer.Writer(nsqd_addresses=addrs)
+    c = config.Config()
+    r = reader.Reader(c)
+    w = writer.Writer(c)
 
     if args['read']:
         r.run()
