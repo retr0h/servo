@@ -20,34 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import nsq
+import testtools
+
+from servo.config import Config
 
 
-class Reader(object):
-    """
-    A client which handles read interactions with nsqd.
-    """
+class TestConfig(testtools.TestCase):
+    def setUp(self):
+        super(TestConfig, self).setUp()
+        self._config = Config()
 
-    def __init__(self, config, **kwargs):
-        self._config = config
+    def test_reader_hosts_accessor(self):
+        result = self._config.reader_hosts
+        expected = ['192.168.90.12:4161',
+                    '192.168.90.13:4161',
+                    '192.168.90.14:4161']
 
-    def _handler(self, message):
-        msg = ('- {0}:\n'
-               '  {1}\n'
-               '  {2}\n').format(message.id,
-                                 message.body,
-                                 message.attempts)
-        print msg
-        return True
+        self.assertEquals(expected, result)
 
-    def _set_reader(self):
-        lookupd_poll_interval = self._config.reader_lookupd_poll_interval
-        nsq.Reader(message_handler=self._handler,
-                   lookupd_http_addresses=self._config.reader_hosts,
-                   topic=self._config.reader_topic,
-                   channel=self._config.reader_channel,
-                   lookupd_poll_interval=lookupd_poll_interval)
+    def test_writer_hosts_accessor(self):
+        result = self._config.writer_hosts
+        expected = ['192.168.90.12:4150',
+                    '192.168.90.13:4150',
+                    '192.168.90.14:4150']
 
-    def run(self):
-        self._set_reader()
-        nsq.run()
+        self.assertEquals(expected, result)
