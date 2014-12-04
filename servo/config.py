@@ -36,17 +36,13 @@ class Config(object):
     @property
     def reader_hosts(self):
         port = self._get_reader_port()
-        hosts = ['192.168.90.12',
-                 '192.168.90.13',
-                 '192.168.90.14']
+        hosts = self._config.get('lookupd_http_addresses')
         return self._get_connection_list(hosts, port)
 
     @property
     def writer_hosts(self):
         port = self._get_writer_port()
-        hosts = ['192.168.90.12',
-                 '192.168.90.13',
-                 '192.168.90.14']
+        hosts = self._config.get('nsqd_tcp_addresses')
         return self._get_connection_list(hosts, port)
 
     @property
