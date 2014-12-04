@@ -30,10 +30,11 @@ class Writer(object):
     A client which handles write interactions with nsqd.
     """
 
-    def __init__(self):
-        self._addrs = ['192.168.90.12:4150',
-                       '192.168.90.13:4150',
-                       '192.168.90.14:4150']
+    def __init__(self, **kwargs):
+        # TODO(retr0h): Further abstract out into a config class.
+        port = kwargs.get('port', 4150)
+        self._nsqd_addrs = ['{host}:{port}'.format(**locals())
+                            for host in kwargs.get('nsqd_addresses')]
         self._writer = self._get_writer()
 
     def _pub_message(self):
@@ -47,7 +48,7 @@ class Writer(object):
     def _get_writer(self):
         # TODO: HA should be handled by publishing to a known load balanced
         # endpoint or local nsqd instance.
-        return nsq.Writer(self._addrs)
+        return nsq.Writer(self._nsqd_addrs)
 
     def _get_ioloop(self):
         return tornado.ioloop.PeriodicCallback(self._pub_message, 1000)
