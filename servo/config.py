@@ -30,7 +30,7 @@ class Config(object):
     """
 
     def __init__(self, **kwargs):
-        config_file = kwargs.get('config_file', '/etc/servo.json')
+        config_file = kwargs.get('config_file')
         self._config = self._get_config(config_file)
 
     @property
