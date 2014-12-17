@@ -3,4 +3,4 @@
 .testrepository/
 .tox/
 .vagrant/
-docs/build/
+doc/build/
