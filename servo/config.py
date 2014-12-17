@@ -21,7 +21,6 @@
 # THE SOFTWARE.
 
 import json
-import os
 
 
 class Config(object):
@@ -58,10 +57,10 @@ class Config(object):
         return self._config.get('reader_channel', 'asdf')
 
     def _get_config(self, config_file):
-        if os.path.isfile(config_file):
+        try:
             return json.load(open(config_file))
-        else:
-            return {}
+        except IOError:
+            return dict()
 
     def _get_connection_list(self, hosts, port):
         """
