@@ -23,6 +23,9 @@ Contents:
 
    testing
 
+   config
+   util
+
 Indices and tables
 ==================
 
