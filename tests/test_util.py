@@ -20,31 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import os
-
 import unittest2 as unittest
+# from mock import Mock
+# from mock import patch
 
-from servo.config import Config
+from servo import util
 
 
-class TestConfig(unittest.TestCase):
-    def setUp(self):
-        basedir = os.path.dirname(__file__)
-        conf = os.path.join(basedir, 'servo.json')
-        self._config = Config(config_file=conf)
+class TestUtil(unittest.TestCase):
+    def test_execute(self):
+        cmd = ['test', 'true']
+        result = util.execute(cmd)
 
-    def test_reader_hosts_accessor(self):
-        result = self._config.reader_hosts
-        expected = ['192.168.90.12:4161',
-                    '192.168.90.13:4161',
-                    '192.168.90.14:4161']
+        self.assertEquals(True, result)
 
-        self.assertEquals(expected, result)
+    def test_execute_raises(self):
+        cmd = ['ls', '/invalid']
+        with self.assertRaises(Exception) as context:
+            util.execute(cmd)
 
-    def test_writer_hosts_accessor(self):
-        result = self._config.writer_hosts
-        expected = ['192.168.90.12:4150',
-                    '192.168.90.13:4150',
-                    '192.168.90.14:4150']
-
-        self.assertEquals(expected, result)
+        # TODO(retr0h): Don't assume test OS.
+        # OSX:
+        # ls: /invalid: No such file or directory\n
+        # Travis:
+        # ls: cannot access /invalid: No such file or directory\n
+        self.assertRegexpMatches(context.exception.message,
+                                 r'.* No such file or directory\n')

@@ -21,30 +21,37 @@
 # THE SOFTWARE.
 
 import os
-
-import unittest2 as unittest
-
-from servo.config import Config
+import subprocess
 
 
-class TestConfig(unittest.TestCase):
-    def setUp(self):
-        basedir = os.path.dirname(__file__)
-        conf = os.path.join(basedir, 'servo.json')
-        self._config = Config(config_file=conf)
+def _handle_result(exitcode, err):
+    """
+    Checks the exitcode for success.  If successful returns True,
+    otherwise raises on failure.
 
-    def test_reader_hosts_accessor(self):
-        result = self._config.reader_hosts
-        expected = ['192.168.90.12:4161',
-                    '192.168.90.13:4161',
-                    '192.168.90.14:4161']
+    :param exitcode: An int containing the command's exit status.
+    :param err: A string containing the command's STDERR.
+    :raises: :class:`Exception` when command failed.
+    """
+    if exitcode == 0:
+        return True
+    else:
+        raise Exception(err)
 
-        self.assertEquals(expected, result)
 
-    def test_writer_hosts_accessor(self):
-        result = self._config.writer_hosts
-        expected = ['192.168.90.12:4150',
-                    '192.168.90.13:4150',
-                    '192.168.90.14:4150']
+def execute(args):
+    """
+    Executes a command in a subprocess.  Returns the result of
+    :meth:`_handle_result()`.
 
-        self.assertEquals(expected, result)
+    :param args: Run the command described by args.
+    """
+    process = subprocess.Popen(args,
+                               cwd=os.getcwd(),
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    (out, err) = process.communicate()
+    exitcode = process.wait()
+
+    return _handle_result(exitcode, err)

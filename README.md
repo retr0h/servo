@@ -8,8 +8,7 @@ The Latin Word Servo has many meanings, mainly: to watch over, keep, protect, ob
 Docs
 ====
 
-	$ tox -e docs
-	$ open doc/build/html/index.html
+For HTML documentation, visit [https://servo.readthedocs.org/](https://servo.readthedocs.org/).
 
 License
 =======
