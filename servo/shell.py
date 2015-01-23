@@ -27,8 +27,6 @@ Servo CLI tool.
 import argparse
 
 import servo
-from servo import config
-from servo import server
 from servo.app import api
 
 
@@ -37,18 +35,11 @@ def _parse_args():
                                  description=__doc__.strip())
     ap.add_argument('--version', action='version',
                     version=servo.__version__)
-    ap.add_argument('--config', default='/etc/servo.json',
-                    help='Path to the config file')
     args = vars(ap.parse_args())
     return args
 
 
 def main():
-    # args = _parse_args()
-    # config_file = args['config']
-    # c = config.Config(config_file=config_file)
-    # s = server.Server(c)
-    # server.run()
     api.run()
 
 if __name__ == '__main__':
