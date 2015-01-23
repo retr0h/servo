@@ -9,18 +9,13 @@ Vagrant.configure('2') do |config|
     ansible.host_key_checking = false
     # ansible.verbose = "vvv"
     ansible.groups = {
-      'nsqadmin' => ['nsqd-1', 'nsqd-2', 'nsqd-3'],
-      'nsqd' => ['nsqd-1', 'nsqd-2', 'nsqd-3'],
-      'nsqlookupd' => ['nsqd-1', 'nsqd-2', 'nsqd-3']
     }
     ansible.extra_vars = {
-      nsq_nsqd_interface: 'eth1',
-      nsq_nsqadmin_interface: 'eth1'
     }
   end
 
   (1..3).each do |i|
-    vm_name = "nsqd-#{i}"
+    vm_name = "servo-#{i}"
     config.vm.define vm_name do |c|
       c.vm.host_name = vm_name
       c.vm.network 'private_network', ip: "192.168.90.#{11 + i}" # eth1

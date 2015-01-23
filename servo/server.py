@@ -20,34 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import nsq
+import bottle
+
+app = bottle.app()
 
 
-class Reader(object):
-    """
-    A client which handles read interactions with nsqd.
-    """
+@bottle.get('/')
+def index():
+    return {"success": True}
 
-    def __init__(self, config, **kwargs):
-        self._config = config
 
-    def _handler(self, message):
-        msg = ('- {0}:\n'
-               '  {1}\n'
-               '  {2}\n').format(message.id,
-                                 message.body,
-                                 message.attempts)
-        print msg
-        return True
-
-    def _set_reader(self):
-        lookupd_poll_interval = self._config.reader_lookupd_poll_interval
-        nsq.Reader(message_handler=self._handler,
-                   lookupd_http_addresses=self._config.reader_hosts,
-                   topic=self._config.reader_topic,
-                   channel=self._config.reader_channel,
-                   lookupd_poll_interval=lookupd_poll_interval)
-
-    def run(self):
-        self._set_reader()
-        nsq.run()
+def run():
+    bottle.run(port=8082)

@@ -33,18 +33,10 @@ class TestConfig(unittest.TestCase):
         conf = os.path.join(basedir, 'servo.json')
         self._config = Config(config_file=conf)
 
-    def test_reader_hosts_accessor(self):
-        result = self._config.reader_hosts
-        expected = ['192.168.90.12:4161',
-                    '192.168.90.13:4161',
-                    '192.168.90.14:4161']
+    # def test_reader_hosts_accessor(self):
+    #     result = self._config.reader_hosts
+    #     expected = ['192.168.90.12:4161',
+    #                 '192.168.90.13:4161',
+    #                 '192.168.90.14:4161']
 
-        self.assertEquals(expected, result)
-
-    def test_writer_hosts_accessor(self):
-        result = self._config.writer_hosts
-        expected = ['192.168.90.12:4150',
-                    '192.168.90.13:4150',
-                    '192.168.90.14:4150']
-
-        self.assertEquals(expected, result)
+    #     self.assertEquals(expected, result)

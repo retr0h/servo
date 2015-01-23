@@ -21,28 +21,17 @@
 # THE SOFTWARE.
 
 import unittest2 as unittest
-# from mock import Mock
-# from mock import patch
+from webtest import TestApp
 
-from servo import util
+import servo.server as server
 
 
-class TestUtil(unittest.TestCase):
-    def test_execute(self):
-        cmd = ['test', 'true']
-        result = util.execute(cmd)
+class TestServer(unittest.TestCase):
+    def test_app_index(self):
+        response = server.index()
 
-        self.assertEquals(True, result)
+        self.assertEquals({"success": True}, response)
 
-    def test_execute_raises(self):
-        cmd = ['ls', '/invalid']
-        with self.assertRaises(Exception) as context:
-            util.execute(cmd)
-
-        # TODO(retr0h): Don't assume test OS.
-        # OSX:
-        # ls: /invalid: No such file or directory\n
-        # Travis:
-        # ls: cannot access /invalid: No such file or directory\n
-        self.assertRegexpMatches(context.exception.message,
-                                 r'.* No such file or directory\n')
+    def test_app_index_resp(self):
+        app = TestApp(server.app)
+        app.get('/')

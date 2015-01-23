@@ -1,3 +1,0 @@
-[submodule "vagrant/roles/nsq"]
-	path = vagrant/roles/nsq
-	url = https://github.com/retr0h/ansible-nsq.git

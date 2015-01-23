@@ -28,8 +28,7 @@ import argparse
 
 import servo
 from servo import config
-from servo import reader
-from servo import writer
+from servo import server
 
 
 def _parse_args():
@@ -37,10 +36,6 @@ def _parse_args():
                                  description=__doc__.strip())
     ap.add_argument('--version', action='version',
                     version=servo.__version__)
-    ap.add_argument('--read', action='store_true',
-                    help='Execute a read action to NSQD')
-    ap.add_argument('--write', action='store_true',
-                    help='Execute a write action to NSQD')
     ap.add_argument('--config', default='/etc/servo.json',
                     help='Path to the config file')
     args = vars(ap.parse_args())
@@ -48,17 +43,11 @@ def _parse_args():
 
 
 def main():
-    args = _parse_args()
-    config_file = args['config']
-    c = config.Config(config_file=config_file)
-    r = reader.Reader(c)
-    w = writer.Writer(c)
-
-    if args['read']:
-        r.run()
-    elif args['write']:
-        w.run()
-
+    # args = _parse_args()
+    # config_file = args['config']
+    # c = config.Config(config_file=config_file)
+    # s = server.Server(c)
+    server.run()
 
 if __name__ == '__main__':
     main()

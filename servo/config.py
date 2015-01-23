@@ -1,6 +1,6 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-# Copyright (c) 2014 John Dewey
+# Copyright (c)  John Dewey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,40 +38,8 @@ class Config(object):
         hosts = self._config.get('lookupd_http_addresses')
         return self._get_connection_list(hosts, port)
 
-    @property
-    def writer_hosts(self):
-        port = self._get_writer_port()
-        hosts = self._config.get('nsqd_tcp_addresses')
-        return self._get_connection_list(hosts, port)
-
-    @property
-    def reader_lookupd_poll_interval(self):
-        return self._config.get('reader_lookupd_poll_interval', 15)
-
-    @property
-    def reader_topic(self):
-        return self._config.get('reader_topic', 'nsq_reader')
-
-    @property
-    def reader_channel(self):
-        return self._config.get('reader_channel', 'asdf')
-
     def _get_config(self, config_file):
         try:
             return json.load(open(config_file))
         except IOError:
             return dict()
-
-    def _get_connection_list(self, hosts, port):
-        """
-        Create a connection object for `etcd.Client`.  Returns a tuple
-        consisting of tuples in the form of (host, port).
-        """
-        return ['{host}:{port}'.format(**locals())
-                for host in hosts]
-
-    def _get_reader_port(self):
-        return self._config.get('reader_port', 4161)
-
-    def _get_writer_port(self):
-        return self._config.get('reader_port', 4150)

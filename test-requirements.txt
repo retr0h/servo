@@ -1,8 +1,6 @@
-coverage
-discover
 flake8
-mock
 pep8
 sphinx
 testrepository
 unittest2
+webtest
