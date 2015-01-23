@@ -27,7 +27,7 @@ from flask import json
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/v1.0/status', methods=['GET'])
 def get_index():
     return json.dumps({'success': True})
 

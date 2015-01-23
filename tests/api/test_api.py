@@ -31,7 +31,7 @@ class TestApi(unittest.TestCase):
         self._app = app.app.test_client()
 
     def test_app_index(self):
-        response = self._app.get('/')
+        response = self._app.get('/v1.0/status')
         data = json.loads(response.data)
 
         self.assertEquals(200, response.status_code)
