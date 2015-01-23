@@ -21,17 +21,18 @@
 # THE SOFTWARE.
 
 import unittest2 as unittest
-from webtest import TestApp
+from flask import json
 
-import servo.server as server
+import servo.app.api as app
 
 
-class TestServer(unittest.TestCase):
+class TestApi(unittest.TestCase):
+    def setUp(self):
+        self._app = app.app.test_client()
+
     def test_app_index(self):
-        response = server.index()
+        response = self._app.get('/')
+        data = json.loads(response.data)
 
-        self.assertEquals({"success": True}, response)
-
-    def test_app_index_resp(self):
-        app = TestApp(server.app)
-        app.get('/')
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(True, data['success'])

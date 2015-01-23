@@ -1,6 +1,6 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-# Copyright (c) 2015 John Dewey
+# Copyright (c)  John Dewey
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import bottle
+from flask import Flask
+from flask import json
 
-app = bottle.app()
+
+app = Flask(__name__)
 
 
-@bottle.get('/')
-def index():
-    return {"success": True}
+@app.route('/', methods=['GET'])
+def get_index():
+    return json.dumps({'success': True})
 
 
 def run():
-    bottle.run(port=8082)
+    app.run(debug=True)

@@ -29,6 +29,7 @@ import argparse
 import servo
 from servo import config
 from servo import server
+from servo.app import api
 
 
 def _parse_args():
@@ -47,7 +48,8 @@ def main():
     # config_file = args['config']
     # c = config.Config(config_file=config_file)
     # s = server.Server(c)
-    server.run()
+    # server.run()
+    api.run()
 
 if __name__ == '__main__':
     main()
