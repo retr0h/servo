@@ -8,20 +8,30 @@ Vagrant.configure('2') do |config|
     ansible.sudo = true
     ansible.host_key_checking = false
     # ansible.verbose = "vvv"
-    ansible.groups = {
-    }
     ansible.extra_vars = {
+      cassandra_listen_address: '192.168.90.11',
+      cassandra_rpc_address: '192.168.90.11',
+      cassandra_seeds: [
+        '192.168.90.11'
+      ],
+      limits_limits: [
+        "* - nofile 100000",
+        "* - memlock unlimited",
+        "* - nproc 32768",
+        "* - as unlimited",
+        "* soft nofile 32768",
+        "* hard nofile 32768",
+        "root soft nofile 32768",
+        "root hard nofile 32768"
+      ]
     }
   end
 
-  (1..3).each do |i|
-    vm_name = "servo-#{i}"
-    config.vm.define vm_name do |c|
-      c.vm.host_name = vm_name
-      c.vm.network 'private_network', ip: "192.168.90.#{11 + i}" # eth1
-      c.vm.provider 'virtualbox' do |vb|
-        vb.customize ['modifyvm', :id, '--memory', '512']
-      end
+  config.vm.define 'cassandra' do |c|
+    c.vm.host_name = 'cassandra'
+    c.vm.network 'private_network', ip: '192.168.90.11' # eth1
+    c.vm.provider 'virtualbox' do |vb|
+      vb.customize ['modifyvm', :id, '--memory', '2048']
     end
   end
 end

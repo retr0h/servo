@@ -1,0 +1,9 @@
+[submodule "vagrant/roles/ANXS.oracle-jdk"]
+	path = vagrant/roles/ANXS.oracle-jdk
+	url = git@github.com:ANXS/oracle-jdk.git
+[submodule "vagrant/roles/ANXS.cassandra"]
+	path = vagrant/roles/ANXS.cassandra
+	url = git@github.com:ANXS/cassandra.git
+[submodule "vagrant/roles/Stouts.limits"]
+	path = vagrant/roles/Stouts.limits
+	url = git@github.com:Stouts/Stouts.limits.git
