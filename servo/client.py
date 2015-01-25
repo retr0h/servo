@@ -20,49 +20,44 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""
-Servo CLI tool.
-"""
+from cqlengine import connection
+from cqlengine.management import create_keyspace
+from cqlengine.management import delete_keyspace
+from cqlengine.management import sync_table
 
-import argparse
-
-import servo
-from servo.app import api
-from servo.client import Client
+from models.stats import Stats
 
 
-def _parse_args():
-    ap = argparse.ArgumentParser(prog='servo',
-                                 description=__doc__.strip())
-    ap.add_argument('--version', action='version',
-                    version=servo.__version__)
-    ap.add_argument('--setup', action='store_true',
-                    help='setup keyspace and schema')
-    ap.add_argument('--teardown', action='store_true',
-                    help='teardown keyspace')
-    ap.add_argument('--server', action='store_true',
-                    help='start API server')
-    args = vars(ap.parse_args())
-    return args
+class Client(object):
+    """
+    """
+    def __init__(self, config):
+        self._config = config
+        self._keyspace = config.get('keyspace')
+        self.lazy_connection()
 
+    def setup(self):
+        self._create_keyspace()
+        self._sync_table()
 
-def main():
-    args = _parse_args()
+    def teardown(self):
+        self._delete_keyspace()
 
-    config = {
-        'hosts': ['192.168.90.11'],
-        'keyspace': 'servo_test'
-    }
-    c = Client(config)
-    c.lazy_connection()
+    def lazy_connection(self):
+        if connection.session is None:
+            self._get_connection()
 
-    if args['setup']:
-        c.setup()
-    elif args['teardown']:
-        c.teardown()
-    elif args['server']:
-        api.run()
+    def _get_connection(self):
+        connection.setup(self._config.get('hosts'),
+                         self._keyspace)
 
+    def _create_keyspace(self):
+        create_keyspace(self._keyspace,
+                        replication_factor=1,
+                        strategy_class="SimpleStrategy")
 
-if __name__ == '__main__':
-    main()
+    def _delete_keyspace(self):
+        delete_keyspace(self._keyspace)
+
+    def _sync_table(self):
+        sync_table(Stats)

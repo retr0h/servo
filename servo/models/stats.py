@@ -20,49 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""
-Servo CLI tool.
-"""
-
-import argparse
-
-import servo
-from servo.app import api
-from servo.client import Client
+from cqlengine import columns
+from cqlengine.models import Model
 
 
-def _parse_args():
-    ap = argparse.ArgumentParser(prog='servo',
-                                 description=__doc__.strip())
-    ap.add_argument('--version', action='version',
-                    version=servo.__version__)
-    ap.add_argument('--setup', action='store_true',
-                    help='setup keyspace and schema')
-    ap.add_argument('--teardown', action='store_true',
-                    help='teardown keyspace')
-    ap.add_argument('--server', action='store_true',
-                    help='start API server')
-    args = vars(ap.parse_args())
-    return args
+class Stats(Model):
+    read_repair_chance = 0.05
+    updated_at = columns.DateTime(primary_key=True)
+    # updated_at = columns.DateTime
+    # year = columns.Integer(primary_key=True, partition_key=True)
+    # month = columns.Integer(primary_key=True, partition_key=True)
+    # date = columns.Integer(primary_key=True, partition_key=True)
+    # region = columns.Text(primary_key=True)
+    # availability_zone = columns.Text(primary_key=True)
+    # service = columns.Text(primary_key=True)
+    # current_state = columns.Integer
+    # current_message = columns.Integer
+    # worst_state = columns.Integer
+    # worst_message = columns.Integer
+    # states = columns.List(columns.Text)
 
-
-def main():
-    args = _parse_args()
-
-    config = {
-        'hosts': ['192.168.90.11'],
-        'keyspace': 'servo_test'
-    }
-    c = Client(config)
-    c.lazy_connection()
-
-    if args['setup']:
-        c.setup()
-    elif args['teardown']:
-        c.teardown()
-    elif args['server']:
-        api.run()
-
-
-if __name__ == '__main__':
-    main()
+# from cqlengine import connection
+# connection.setup(['192.168.90.11'], 'servo_test')
+# from datetime import datetime
+# Stats.create(updated_at=datetime.now())
